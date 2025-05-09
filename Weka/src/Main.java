@@ -20,3 +20,19 @@ public class Main {
         }
     }
 }
+
+// Purpose:
+
+// Act as central controller
+
+// Let user input file path
+
+// Call each step in order: Clean → Convert → Train → Evaluate
+
+// Task for Team Member:
+
+// Command-line interface
+
+// Modular calling of other classes
+
+// Handle exceptions
