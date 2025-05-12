@@ -1,0 +1,93 @@
+====================================
+GIT BASH COMMANDS FOR .GITIGNORE
+====================================
+
+A quick guide to manage ignored files in Git using Git Bash.
+Project Reference: DataMiningProject
+App to use: Git Bash (open this app on Windows to use those below commands)
+
+------------------------------------
+BASIC NAVIGATION & STATUS
+------------------------------------
+$ cd /c/GitHub/DataMiningProject   # Navigate to repo
+$ git status                       # Check Git status
+
+
+------------------------------------
+CREATE/EDIT .GITIGNORE
+------------------------------------
+$ notepad .gitignore               # Open or create .gitignore
+
+Example Patterns:
+-----------------
+# Ignore a file
+debug.log
+
+# Ignore a folder
+logs/
+
+# Ignore file types
+*.class
+*.jar
+
+# Keep a specific file
+!important.jar
+
+# Keep empty folders (use placeholder)
+temp/*
+!temp/.gitkeep
+
+
+------------------------------------
+REMOVE TRACKED FILES FROM GIT
+------------------------------------
+$ git ls-files path/to/file        # Check if tracked
+$ git rm --cached path/to/file     # Stop tracking file
+$ git rm -r --cached folder/       # Stop tracking folder
+
+
+------------------------------------
+COMMIT CHANGES
+------------------------------------
+$ git add .gitignore
+$ git commit -m "Update .gitignore"
+$ git push                         # Push if using remote
+
+
+------------------------------------
+PROJECT EXAMPLES
+------------------------------------
+1. Ignore VS Code settings:
+   - Add `.vscode/` to .gitignore
+   - Run: $ git rm -r --cached .vscode/
+
+2. Ignore Weka results:
+   - Add `Weka/results/`
+   - Run: $ git rm -r --cached Weka/results/
+
+3. Ignore all .jar files except weka.jar:
+   - Add:
+     *.jar
+     !Weka/lib/weka.jar
+
+
+------------------------------------
+BEST PRACTICES
+------------------------------------
+- Add .gitignore before committing unwanted files
+- Use wildcards and exceptions smartly
+- Use `/` not `\` in paths
+- Keep .gitignore versioned
+- Add comments for clarity
+
+
+------------------------------------
+VERIFYING .GITIGNORE
+------------------------------------
+$ echo "test" > .vscode/test.txt   # Add test file
+$ git status                       # Should not show the file
+
+
+====================================
+END OF GUIDE
+====================================
