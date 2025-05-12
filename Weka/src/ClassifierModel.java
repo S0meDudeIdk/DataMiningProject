@@ -83,20 +83,15 @@ public class ClassifierModel {
     }
 
     public void printResults(Evaluation eval) throws Exception {
-        System.out.println("\n=== Model Information ===");
-        System.out.println(classifier.toString());
-
-        System.out.println("\n=== Evaluation Results ===");
+        System.out.println("=== Model Information ===");
+        System.out.println(classifier.toString().trim());
+        System.out.println("=== Evaluation Results ===");
         System.out.println("Accuracy: " + (eval.pctCorrect()) + "%");
         System.out.println("Kappa statistic: " + eval.kappa());
         System.out.println("Mean absolute error: " + eval.meanAbsoluteError());
         System.out.println("Root mean squared error: " + eval.rootMeanSquaredError());
-
-        System.out.println("\n=== Confusion Matrix ===");
-        System.out.println(eval.toMatrixString());
-
-        System.out.println("\n=== Detailed Accuracy By Class ===");
-        System.out.println(eval.toClassDetailsString());
+        System.out.println(eval.toMatrixString().trim());
+        System.out.println(eval.toClassDetailsString().trim());
     }
 
     public void saveModel(String modelPath) throws Exception {
@@ -114,20 +109,14 @@ public class ClassifierModel {
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(outputPath))) {
             writer.println("=== Model Information ===");
-            writer.println(classifier.toString());
-
-            writer.println("\n=== Evaluation Results ===");
+            writer.println(classifier.toString().trim());
+            writer.println("=== Evaluation Results ===");
             writer.println("Accuracy: " + (eval.pctCorrect()) + "%");
             writer.println("Kappa statistic: " + eval.kappa());
             writer.println("Mean absolute error: " + eval.meanAbsoluteError());
             writer.println("Root mean squared error: " + eval.rootMeanSquaredError());
-
-            writer.println();
-            writer.println(eval.toMatrixString());
-
-            writer.println();
-            writer.println(eval.toClassDetailsString());
-
+            writer.println(eval.toMatrixString().trim());
+            writer.println(eval.toClassDetailsString().trim());
             System.out.println("Evaluation results saved to: " + outputPath);
         }
     }
