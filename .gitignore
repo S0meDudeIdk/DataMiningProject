@@ -14,4 +14,6 @@
 
 !Weka/lib/weka.jar
 
+notepad .gitignore
+
 hs_err_pid*
