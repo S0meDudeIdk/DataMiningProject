@@ -1,0 +1,14 @@
+IMPORTANT: Java Environment Setup Guide
+If you encounter issues related to the Java Environment path, follow these steps:
+1. Open the "settings.json" file in your project.
+2. Update the "path" and "sources" fields with the correct Java Environment location.
+3. To find your Java Environment path, use the provided script:
+   Step-by-step:
+   a. Open the VSCode terminal.
+   b. Navigate to the utils directory:
+      cd utils
+   c. Run the script:
+      find_java.bat
+   Alternatively, you can run the script directly from any terminal by entering the full path, like:
+   D:\GitHub\DataMiningProject\utils\find_java.bat
+This will print out the correct path to your Java environment. Copy that path and use it in your settings.json.

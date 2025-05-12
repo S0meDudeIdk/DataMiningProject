@@ -1,38 +1,31 @@
-import weka.core.Instances;
-import weka.core.converters.ConverterUtils.DataSource;
+import weka.classifiers.Evaluation;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        String filePath = "Weka/dataset/iris.arff";
-        DataSource source = new DataSource(filePath);
-        Instances data = source.getDataSet();
+        try {
+            String filePath = "Weka/dataset/iris.arff";
 
-        if (data == null) {
-            System.out.println("Failed to load dataset.");
-            return;
-        }
+            if (args.length > 0) {
+                filePath = args[0];
+            }
 
-        System.out.println("Loaded dataset with " + data.numInstances() + " instances.");
-        System.out.println("=== Full Dataset ===");
+            ClassifierModel model = new ClassifierModel(filePath, "j48");
+            model.trainModel();
 
-        for (int i = 0; i < data.numInstances(); i++) {
-            System.out.println(data.instance(i));
+            Evaluation eval = model.evaluateModel(10);
+
+            model.printResults(eval);
+
+            String datasetName = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.lastIndexOf("."));
+
+            String resultPath = "Weka/results/" + datasetName + "_j48_results.txt";
+            model.saveResultsToFile(eval, resultPath);
+
+            System.out.println("Process completed successfully!");
+
+        } catch (Exception e) {
+            System.err.println("Error in data mining process: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
-
-// Purpose:
-
-// Act as central controller
-
-// Let user input file path
-
-// Call each step in order: Clean → Convert → Train → Evaluate
-
-// Task for Team Member:
-
-// Command-line interface
-
-// Modular calling of other classes
-
-// Handle exceptions

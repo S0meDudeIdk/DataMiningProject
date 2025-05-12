@@ -1,0 +1,83 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "DataMiningProject_804da14c"
+        },
+        {
+            "type": "java",
+            "name": "Run Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "DataMiningProject",
+            "vmArgs": "--add-opens java.base/java.lang=ALL-UNNAMED",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "java",
+            "name": "Run ClassifierModel",
+            "request": "launch",
+            "mainClass": "ClassifierModel",
+            "vmArgs": "--add-opens java.base/java.lang=ALL-UNNAMED",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "java",
+            "name": "Run DataCleaner",
+            "request": "launch",
+            "mainClass": "DataCleaner",
+            "vmArgs": "--add-opens java.base/java.lang=ALL-UNNAMED",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "java",
+            "name": "Run ARFFConverter",
+            "request": "launch",
+            "mainClass": "ARFFConverter",
+            "vmArgs": "--add-opens java.base/java.lang=ALL-UNNAMED",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "java",
+            "name": "Run Evaluator",
+            "request": "launch",
+            "mainClass": "Evaluator",
+            "vmArgs": "--add-opens java.base/java.lang=ALL-UNNAMED",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "java",
+            "name": "Run ImprovedModel",
+            "request": "launch",
+            "mainClass": "ImprovedModel",
+            "vmArgs": "--add-opens java.base/java.lang=ALL-UNNAMED",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "java",
+            "name": "Run ClassifierModel with Custom Dataset",
+            "request": "launch",
+            "mainClass": "ClassifierModel",
+            "args": [
+                "Weka/dataset/custom_dataset.arff",
+                "j48"
+            ],
+            "vmArgs": "--add-opens java.base/java.lang=ALL-UNNAMED",
+            "cwd": "${workspaceFolder}"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Run Complete Pipeline",
+            "configurations": [
+                "Run DataCleaner",
+                "Run ARFFConverter",
+                "Run ClassifierModel"
+            ]
+        }
+    ]
+}
