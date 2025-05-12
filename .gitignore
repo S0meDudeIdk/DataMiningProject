@@ -1,13 +1,9 @@
-# VS Code settings with user-specific Java paths
-.vscode/settings.json
+.vscode/
 
-# Java class files
 *.class
 
-# Log files
 *.log
 
-# Package files
 *.jar
 *.war
 *.nar
@@ -16,8 +12,6 @@
 *.tar.gz
 *.rar
 
-# Exception for required Weka library
 !Weka/lib/weka.jar
 
-# Virtual machine crash logs
 hs_err_pid*
