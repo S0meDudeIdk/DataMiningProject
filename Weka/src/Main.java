@@ -9,7 +9,7 @@ public class Main {
                 filePath = args[0];
             }
 
-            ClassifierModel model = new ClassifierModel(filePath, "j48");
+            ClassifierModel model = new ClassifierModel(filePath, "j48", null);
             model.trainModel();
 
             Evaluation eval = model.evaluateModel(10);
@@ -20,7 +20,8 @@ public class Main {
 
             String resultPath = "Weka/results/" + datasetName + "_j48_results.txt";
             model.saveResultsToFile(eval, resultPath);
-
+            ImprovedModel improvedModel = new ImprovedModel();
+            improvedModel.runWithClassifier(filePath, "kmeans", "J48", 10);
             System.out.println("Process completed successfully!");
 
         } catch (Exception e) {

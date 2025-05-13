@@ -15,8 +15,12 @@ public class ClassifierModel {
     private Classifier classifier;
     private String classifierType;
 
-    public ClassifierModel(String dataPath, String classifierType) throws Exception {
-        loadData(dataPath);
+    public ClassifierModel(String dataPath, String classifierType, Instances improvedData) throws Exception {
+        if(improvedData!=null){
+            this.data = new Instances(improvedData);
+        } else {
+            loadData(dataPath);
+        }
         this.classifierType = classifierType.toLowerCase();
         initializeClassifier();
     }
