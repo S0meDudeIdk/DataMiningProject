@@ -26,12 +26,17 @@ public class Main {
             if (choice == 1) {
                 ClassifierModel model = new ClassifierModel(filePath, classifierType, null);
                 model.trainModel();
-                Evaluation eval = model.evaluateModel(10);
-                model.printResults(eval);
+                // Evaluation eval = model.evaluateModel(10);
+                // model.printResults(eval);
+                
+                Evaluator evaluator = new Evaluator(model.getClassifier(), model.getData());
+                evaluator.crossValidate(10);
+                evaluator.printResults();
 
                 String datasetName = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.lastIndexOf("."));
                 String resultPath = "Weka/results/" + datasetName + "_" + classifierType + "_results.txt";
-                model.saveResultsToFile(eval, resultPath);
+                evaluator.saveResultsToFile(resultPath);
+
             } else if (choice == 2) {
                 System.out.println("Choose clustering method:");
                 System.out.println("kmeans | em");

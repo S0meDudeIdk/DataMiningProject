@@ -69,11 +69,12 @@ public class ImprovedModel {
         Instances improved = runClustering(dataPath, clusterMethod);
         ClassifierModel classifier = new ClassifierModel(null, classifiertype, improved);
         classifier.trainModel();
-        Evaluation eval = classifier.evaluateModel(folds);
-        classifier.printResults(eval);
+        Evaluator evaluator = new Evaluator(classifier.getClassifier(), classifier.getData());
+        evaluator.crossValidate(10);
+        evaluator.printResults();
         String datasetName = dataPath.substring(dataPath.lastIndexOf("/")+1, dataPath.lastIndexOf("."));
-        String resultPath = "Weka/results/" + datasetName + "_j48_results_improved.txt";
-        classifier.saveResultsToFile(eval, resultPath);
+        String resultPath = "Weka/results/" + datasetName + "_" + classifiertype +"_results_improved_by_"+ clusterMethod +".txt";
+        evaluator.saveResultsToFile(resultPath);
     }
 
 }

@@ -4,11 +4,6 @@ import weka.classifiers.Classifier;
 import weka.classifiers.trees.J48;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.functions.SMO;
-import weka.classifiers.Evaluation;
-import java.util.Random;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
 
 public class ClassifierModel {
     private Instances data;
@@ -71,58 +66,6 @@ public class ClassifierModel {
         System.out.println("Training " + classifierType + " classifier...");
         classifier.buildClassifier(data);
         System.out.println("Training complete.");
-    }
-
-    public Evaluation evaluateModel(int folds) throws Exception {
-        if (data == null) {
-            throw new Exception("No data loaded. Load data before evaluation.");
-        }
-
-        System.out.println("Evaluating model using " + folds + "-fold cross-validation...");
-        Evaluation eval = new Evaluation(data);
-        Random rand = new Random(1);
-        eval.crossValidateModel(classifier, data, folds, rand);
-
-        return eval;
-    }
-
-    public void printResults(Evaluation eval) throws Exception {
-        System.out.println("=== Model Information ===");
-        System.out.println(classifier.toString().trim());
-        System.out.println("=== Evaluation Results ===");
-        System.out.println("Accuracy: " + (eval.pctCorrect()) + "%");
-        System.out.println("Kappa statistic: " + eval.kappa());
-        System.out.println("Mean absolute error: " + eval.meanAbsoluteError());
-        System.out.println("Root mean squared error: " + eval.rootMeanSquaredError());
-        System.out.println(eval.toMatrixString().trim());
-        System.out.println(eval.toClassDetailsString().trim());
-    }
-
-    public void saveModel(String modelPath) throws Exception {
-        weka.core.SerializationHelper.write(modelPath, classifier);
-        System.out.println("Model saved to: " + modelPath);
-    }
-
-    public void saveResultsToFile(Evaluation eval, String outputPath) throws Exception {
-        File outputFile = new File(outputPath);
-        File parentDir = outputFile.getParentFile();
-        if (parentDir != null && !parentDir.exists()) {
-            parentDir.mkdirs();
-            System.out.println("Created directory: " + parentDir.getAbsolutePath());
-        }
-
-        try (PrintWriter writer = new PrintWriter(new FileWriter(outputPath))) {
-            writer.println("=== Model Information ===");
-            writer.println(classifier.toString().trim());
-            writer.println("=== Evaluation Results ===");
-            writer.println("Accuracy: " + (eval.pctCorrect()) + "%");
-            writer.println("Kappa statistic: " + eval.kappa());
-            writer.println("Mean absolute error: " + eval.meanAbsoluteError());
-            writer.println("Root mean squared error: " + eval.rootMeanSquaredError());
-            writer.println(eval.toMatrixString().trim());
-            writer.println(eval.toClassDetailsString().trim());
-            System.out.println("Evaluation results saved to: " + outputPath);
-        }
     }
 
     public Classifier getClassifier() {
