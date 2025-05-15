@@ -1,10 +1,11 @@
 import weka.classifiers.Evaluation;
 import java.util.*;
+
 public class Main {
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
         try {
-            String filePath = "Weka/dataset/wekadataset/iris.arff";
+            String filePath = "Weka/dataset/wekadataset/iris.arff"; 
 
             if (args.length > 0) {
                 filePath = args[0];
@@ -20,19 +21,18 @@ public class Main {
             System.out.print("Enter classifier type: ");
             String classifierType = scanner.nextLine().trim().toLowerCase();
 
-             int folds = 10;
+            int folds = 10;
 
-            if(choice == 1){
-                ClassifierModel model = new ClassifierModel(filePath, "j48", null);
+            if (choice == 1) {
+                ClassifierModel model = new ClassifierModel(filePath, classifierType, null);
                 model.trainModel();
                 Evaluation eval = model.evaluateModel(10);
                 model.printResults(eval);
 
                 String datasetName = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.lastIndexOf("."));
-                String resultPath = "Weka/results/" + datasetName + "_j48_results.txt";
+                String resultPath = "Weka/results/" + datasetName + "_" + classifierType + "_results.txt";
                 model.saveResultsToFile(eval, resultPath);
-            }
-            else if(choice == 2){
+            } else if (choice == 2) {
                 System.out.println("Choose clustering method:");
                 System.out.println("kmeans | em");
                 System.out.print("Enter clustering method: ");
@@ -40,8 +40,7 @@ public class Main {
 
                 ImprovedModel improvedModel = new ImprovedModel();
                 improvedModel.runWithClassifier(filePath, clusterMethod, classifierType, folds);
-            }
-            else {
+            } else {
                 System.out.println("Invalid choice. Please select 1 or 2.");
             }
             System.out.println("Process completed successfully!");
@@ -49,8 +48,7 @@ public class Main {
         } catch (Exception e) {
             System.err.println("Error in data mining process: " + e.getMessage());
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             scanner.close();
         }
     }
