@@ -56,7 +56,7 @@ public class ARFFConverter {
         }
     }
     
-        private static void convertUsingManualParsing(String csvFilePath, String arffFilePath) throws Exception {
+    private static void convertUsingManualParsing(String csvFilePath, String arffFilePath) throws Exception {
         try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
             // Read header
             String headerLine = reader.readLine();
@@ -66,7 +66,7 @@ public class ARFFConverter {
             
             // Parse header to get attribute names
             List<String> attributeNames = parseCSVLine(headerLine);
-            
+                
             // Create ARFF file manually
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(arffFilePath))) {
                 // Write ARFF header

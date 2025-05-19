@@ -5,7 +5,7 @@ public class DataCleaner {
 
     public static void main(String[] args){
         String inputARFF = "Weka/dataset/computed_insight_success_of_active_sellers.arff";
-        String outputARFF = "Weka/dataset/computed_insight_success_of_active_sellers_cleaned.arff";
+        String outputARFF = "Weka/dataset/data_ready/computed_insight_success_of_active_sellers_cleaned.arff";
             // summer-products-with-rating-and-performance_2020-08
             // computed_insight_success_of_active_sellers
             // unique-categories
