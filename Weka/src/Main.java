@@ -7,13 +7,15 @@ public class Main {
         try {
             // For testing the classifier
             // String filePath = "emotions_train.arff"; 
-            String filePath = "Weka/dataset/summer-products-with-rating-and-performance_2020-08.arff"; 
+            String filePath = "Weka/dataset/summer-products-with-rating-and-performance_2020-08.arff";
+            String testFilePath = "";
+            String trainFilePath = ""; 
             // summer-products-with-rating-and-performance_2020-08
             // computed_insight_success_of_active_sellers
             // unique-categories
             // unique-categories.sorted-by-count
             if (args.length > 0) {
-                filePath = args[0];
+                // filePath = args[0];
             }
             System.out.println("Choose operation:");
             System.out.println("1. Classification only");
@@ -29,18 +31,19 @@ public class Main {
             int folds = 10;
 
             if (choice == 1) {
-                ClassifierModel model = new ClassifierModel(filePath, classifierType, null);
+                // ClassifierModel model = new ClassifierModel(filePath, classifierType, null);
+                ClassifierModel model = new ClassifierModel(trainFilePath, testFilePath, classifierType, null, null);
                 model.trainModel();
                 // Evaluation eval = model.evaluateModel(10);
                 // model.printResults(eval);
                 
-                Evaluator evaluator = new Evaluator(model.getClassifier(), model.getData());
+                Evaluator evaluator = new Evaluator(model.getClassifier(), model.getTrainData(), model.getTestData());
                 evaluator.crossValidate(10);
-                evaluator.printResults();
+                evaluator.printResults(true);
 
                 String datasetName = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.lastIndexOf("."));
                 String resultPath = "Weka/results/" + datasetName + "_" + classifierType + "_results.txt";
-                evaluator.saveResultsToFile(resultPath);
+                evaluator.saveResultsToFile(resultPath, true);
 
             } else if (choice == 2) {
                 System.out.println("Choose clustering method:");
@@ -49,7 +52,7 @@ public class Main {
                 String clusterMethod = scanner.nextLine().trim().toLowerCase();
 
                 ImprovedModel improvedModel = new ImprovedModel();
-                improvedModel.runWithClassifier(filePath, clusterMethod, classifierType, folds);
+                improvedModel.runWithClassifier(trainFilePath, testFilePath, clusterMethod, classifierType, folds);
             } else {
                 System.out.println("Invalid choice. Please select 1 or 2.");
             }
