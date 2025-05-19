@@ -5,8 +5,11 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
         try {
-            String filePath = "Weka/dataset/wekadataset/iris.arff"; 
-
+            String filePath = "Weka/dataset/computed_insight_success_of_active_sellers_cleaned.arff"; 
+            // summer-products-with-rating-and-performance_2020-08
+            // computed_insight_success_of_active_sellers
+            // unique-categories
+            // unique-categories.sorted-by-count
             if (args.length > 0) {
                 filePath = args[0];
             }

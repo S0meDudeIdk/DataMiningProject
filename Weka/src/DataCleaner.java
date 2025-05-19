@@ -4,9 +4,12 @@ import java.util.*;
 public class DataCleaner {
 
     public static void main(String[] args){
-        String inputARFF = "Weka/dataset/iris.arff";
-        String outputARFF = "Weka/dataset/iris_cleaned.arff";
-
+        String inputARFF = "Weka/dataset/computed_insight_success_of_active_sellers.arff";
+        String outputARFF = "Weka/dataset/computed_insight_success_of_active_sellers_cleaned.arff";
+            // summer-products-with-rating-and-performance_2020-08
+            // computed_insight_success_of_active_sellers
+            // unique-categories
+            // unique-categories.sorted-by-count
         try{
             cleanARFF(inputARFF, outputARFF);
         } catch (IOException e){
