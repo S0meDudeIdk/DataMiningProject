@@ -33,6 +33,19 @@ public class Evaluator {
         System.out.println("Root mean squared error: " + evaluation.rootMeanSquaredError());
         System.out.println(evaluation.toMatrixString().trim());
         System.out.println(evaluation.toClassDetailsString().trim());
+
+        evaluation.evaluateModel(classifier, data);
+        
+        // Print results
+        System.out.println(evaluation.toSummaryString("=== Evaluation Results ===", false));
+        System.out.println("Confusion Matrix:");
+        double[][] cmatrix = evaluation.confusionMatrix();
+        for (double[] row : cmatrix) {
+            for (double val : row) {
+                System.out.print(val + " ");
+            }
+            System.out.println();
+        }
     }
 
     public void saveResultsToFile(String outputPath) throws Exception {

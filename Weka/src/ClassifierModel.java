@@ -10,6 +10,7 @@ import weka.classifiers.functions.SMO;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.Normalize;
 import weka.filters.unsupervised.attribute.ReplaceMissingValues;
+import weka.filters.unsupervised.attribute.StringToWordVector;
 import weka.filters.supervised.attribute.AttributeSelection;
 import weka.attributeSelection.InfoGainAttributeEval;
 import weka.attributeSelection.Ranker;
@@ -28,6 +29,19 @@ public class ClassifierModel {
 
         if (improvedData != null) {
             this.data = new Instances(improvedData);
+            handleMissingValues();
+            preprocessNumericData();
+
+            if (data.classAttribute().isNumeric() &&
+                    (classifierType.equals("j48") || classifierType.equals("naivebayes")
+                            || classifierType.equals("svm"))) {
+                discretizeClassAttribute();
+            }
+
+            System.out.println("Loaded dataset: " + dataPath);
+            System.out.println("Number of instances: " + data.numInstances());
+            System.out.println("Number of attributes: " + data.numAttributes());
+            System.out.println("Class attribute: " + data.classAttribute().name());
         } else {
             loadData(dataPath);
         }
@@ -203,6 +217,9 @@ public class ClassifierModel {
             throw new Exception("No data loaded. Load data before training.");
         }
         System.out.println("Training " + classifierType + " classifier...");
+        StringToWordVector filter = new StringToWordVector();
+        filter.setInputFormat(data);
+        data = Filter.useFilter(data, filter);
         classifier.buildClassifier(data);
         System.out.println("Training complete.");
     }
