@@ -4,6 +4,11 @@ import weka.classifiers.Classifier;
 import weka.classifiers.trees.J48;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.functions.SMO;
+import weka.filters.Filter;
+import weka.filters.unsupervised.attribute.Normalize;
+import weka.filters.supervised.attribute.AttributeSelection;
+import weka.attributeSelection.InfoGainAttributeEval;
+import weka.attributeSelection.Ranker;
 
 public class ClassifierModel {
     private Instances data;
@@ -11,7 +16,7 @@ public class ClassifierModel {
     private String classifierType;
 
     public ClassifierModel(String dataPath, String classifierType, Instances improvedData) throws Exception {
-        if(improvedData!=null){
+        if (improvedData != null) {
             this.data = new Instances(improvedData);
         } else {
             loadData(dataPath);
@@ -28,10 +33,44 @@ public class ClassifierModel {
             data.setClassIndex(data.numAttributes() - 1);
         }
 
+        // Preprocess numeric data
+        preprocessNumericData();
+
         System.out.println("Loaded dataset: " + dataPath);
         System.out.println("Number of instances: " + data.numInstances());
         System.out.println("Number of attributes: " + data.numAttributes());
         System.out.println("Class attribute: " + data.classAttribute().name());
+    }
+
+    private void preprocessNumericData() throws Exception {
+        // Count numeric attributes
+        int numericCount = 0;
+        for (int i = 0; i < data.numAttributes(); i++) {
+            if (i != data.classIndex() && data.attribute(i).isNumeric()) {
+                numericCount++;
+            }
+        }
+
+        // Apply normalization if we have numeric attributes
+        if (numericCount > 0) {
+            System.out.println("Detected " + numericCount + " numeric attributes. Applying normalization.");
+            Normalize normalize = new Normalize();
+            normalize.setInputFormat(data);
+            data = Filter.useFilter(data, normalize);
+
+            // If dataset is high-dimensional, perform attribute selection
+            if (data.numAttributes() > 10) {
+                AttributeSelection attSelection = new AttributeSelection();
+                InfoGainAttributeEval eval = new InfoGainAttributeEval();
+                Ranker search = new Ranker();
+                search.setThreshold(0.0);
+                attSelection.setEvaluator(eval);
+                attSelection.setSearch(search);
+                attSelection.setInputFormat(data);
+                data = Filter.useFilter(data, attSelection);
+                System.out.println("Applied attribute selection. Reduced to " + data.numAttributes() + " attributes.");
+            }
+        }
     }
 
     private void initializeClassifier() throws Exception {
