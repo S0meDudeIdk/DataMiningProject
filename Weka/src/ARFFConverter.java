@@ -90,24 +90,51 @@ public class ARFFConverter {
                 while ((line = reader.readLine()) != null) {
                     List<String> values = parseCSVLine(line);
                     
-                    // Format as ARFF data row
-                    writer.write("{");
-                    boolean first = true;
-                    
-                    for (int i = 0; i < values.size() && i < attributeNames.size(); i++) {
-                        String value = values.get(i).trim();
-                        if (value.isEmpty() || value.equals("?")) continue; // Skip missing values
+                    // Format as standard ARFF data row (not sparse)
+                    for (int i = 0; i < attributeNames.size(); i++) {
+                        // Use value if available, otherwise use missing value marker
+                        String value = (i < values.size()) ? values.get(i).trim() : "?";
                         
-                        if (!first) writer.write(",");
-                        writer.write(i + " '" + escapeArffString(value) + "'");
-                        first = false;
+                        // Handle empty values
+                        if (value.isEmpty()) {
+                            value = "?";
+                        }
+                        
+                        // Determine if value needs quotes (non-numeric values need quotes)
+                        boolean needsQuotes = !isNumeric(value) && !value.equals("?");
+                        
+                        // Write the value with appropriate formatting
+                        if (needsQuotes) {
+                            // Escape any double quotes in the value
+                            value = value.replace("\"", "\\\"");
+                            writer.write("\"" + value + "\"");
+                        } else {
+                            writer.write(value);
+                        }
+                        
+                        // Add comma if not the last value
+                        if (i < attributeNames.size() - 1) {
+                            writer.write(",");
+                        }
                     }
-                    
-                    writer.write("}\n");
+                    writer.write("\n");
                 }
+                
+                System.out.println("Manual conversion successful using standard ARFF format!");
             }
-            
-            System.out.println("Manual conversion successful using sparse ARFF format!");
+        }
+    }
+
+    // Helper method to check if a string is numeric
+    private static boolean isNumeric(String str) {
+        if (str == null || str.equals("?")) {
+            return false;
+        }
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
     
