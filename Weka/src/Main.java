@@ -8,8 +8,6 @@ public class Main {
             // For testing the classifier
             // String filePath = "emotions_train.arff"; 
             String filePath = "Weka/dataset/summer-products-with-rating-and-performance_2020-08.arff";
-            String testFilePath = "";
-            String trainFilePath = ""; 
             // summer-products-with-rating-and-performance_2020-08
             // computed_insight_success_of_active_sellers
             // unique-categories
@@ -31,19 +29,19 @@ public class Main {
             int folds = 10;
 
             if (choice == 1) {
-                // ClassifierModel model = new ClassifierModel(filePath, classifierType, null);
-                ClassifierModel model = new ClassifierModel(trainFilePath, testFilePath, classifierType, null, null);
-                model.trainModel();
+                ClassifierModel model = new ClassifierModel(filePath, classifierType, null, null);
+                // ClassifierModel model = new ClassifierModel(trainFilePath, testFilePath, classifierType, null, null);
+                model.trainModelSingleData();
                 // Evaluation eval = model.evaluateModel(10);
                 // model.printResults(eval);
                 
-                Evaluator evaluator = new Evaluator(model.getClassifier(), model.getTrainData(), model.getTestData());
+                Evaluator evaluator = new Evaluator(model.getClassifier(), model.getData(), null);
                 evaluator.crossValidate(10);
-                evaluator.printResults(true);
+                evaluator.printResults();
 
                 String datasetName = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.lastIndexOf("."));
                 String resultPath = "Weka/results/" + datasetName + "_" + classifierType + "_results.txt";
-                evaluator.saveResultsToFile(resultPath, true);
+                evaluator.saveResultsToFile(resultPath);
 
             } else if (choice == 2) {
                 System.out.println("Choose clustering method:");
@@ -52,7 +50,7 @@ public class Main {
                 String clusterMethod = scanner.nextLine().trim().toLowerCase();
 
                 ImprovedModel improvedModel = new ImprovedModel();
-                improvedModel.runWithClassifier(trainFilePath, testFilePath, clusterMethod, classifierType, folds);
+                improvedModel.runWithClassifier(filePath, clusterMethod, classifierType, folds);
             } else {
                 System.out.println("Invalid choice. Please select 1 or 2.");
             }
