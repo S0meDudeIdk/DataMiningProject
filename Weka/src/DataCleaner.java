@@ -28,29 +28,30 @@ public class DataCleaner {
         // Step 1: Read the ARFF file
         try (BufferedReader reader = new BufferedReader(new FileReader(inputPath))) {
             String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
+            while((line = reader.readLine()) != null){
+                if(line.trim().isEmpty()) continue;
 
-                if (line.trim().toLowerCase().startsWith("@data")) {
+                if(line.trim().toLowerCase().startsWith("@data")){
                     inDataSection = true;
                     header.add(line);
                     continue;
                 }
 
-                if (!inDataSection) {
+                if(!inDataSection){
                     header.add(line);
-                    if (line.toLowerCase().startsWith("@attribute")) {
+                    if(line.toLowerCase().startsWith("@attribute")){
                         String[] parts = line.split("\\s+", 3);
-                        if (parts.length >= 3) {
+                        if(parts.length >= 3){
                             String type = parts[2].trim().toLowerCase();
                             attributeTypes.add(type);
                         }
                     }
-                } else {
+                } 
+                else{
                     String trimmed = line.trim();
-                    if (!trimmed.isEmpty() && !trimmed.startsWith("%") && trimmed.contains(",")) {
+                    if(!trimmed.isEmpty() && !trimmed.startsWith("%") && trimmed.contains(",")){
                         totalRecordsBefore++;
-                        if (uniqueRows.add(trimmed)) {
+                        if (uniqueRows.add(trimmed)){
                             String[] fields = trimmed.split(",", -1); 
                             if (numCols == -1) numCols = fields.length;
                             data.add(fields);
@@ -68,7 +69,7 @@ public class DataCleaner {
         int[] imputedCounts = new int[numCols];
         String[] methodsUsed = new String[numCols];
 
-        for (int col = 0; col < numCols; col++) {
+        for(int col = 0; col < numCols; col++){
             boolean isNumeric = attributeTypes.get(col).contains("numeric")
                     || attributeTypes.get(col).contains("real")
                     || attributeTypes.get(col).contains("integer");
@@ -77,18 +78,20 @@ public class DataCleaner {
             Map<String, Integer> freq = new HashMap<>();
             int missing = 0;
 
-            for (String[] row : data) {
+            for(String[] row : data){
                 String value = row[col].trim();
-                if (value.isEmpty() || value.equals("?")) {
+                if(value.isEmpty() || value.equals("?")){
                     missing++;
-                } else {
-                    if (isNumeric) {
-                        try {
+                } 
+                else{
+                    if(isNumeric){
+                        try{
                             numericValues.add(Double.parseDouble(value));
                         } catch (NumberFormatException e) {
                             missing++;
                         }
-                    } else {
+                    } 
+                    else{
                         freq.put(value, freq.getOrDefault(value, 0) + 1);
                     }
                 }
@@ -96,28 +99,32 @@ public class DataCleaner {
 
             missingCounts[col] = missing;
 
-            if (isNumeric) {
-                if (!numericValues.isEmpty()) {
+            if(isNumeric){
+                if(!numericValues.isEmpty()){
                     Collections.sort(numericValues);
                     double median;
                     int n = numericValues.size();
-                    if (n % 2 == 0) {
+                    if(n % 2 == 0){
                         median = (numericValues.get(n / 2 - 1) + numericValues.get(n / 2)) / 2.0;
-                    } else {
+                    } 
+                    else{
                         median = numericValues.get(n / 2);
                     }
                     
-                    if (median == Math.floor(median)) {
+                    if(median == Math.floor(median)) {
                         imputationValues[col] = String.format("%.0f", median);  
-                    } else {
+                    } 
+                    else{
                         imputationValues[col] = String.format("%.1f", median); 
                     }
                     methodsUsed[col] = "Median";
-                } else {
+                } 
+                else{
                     imputationValues[col] = "?";
                     methodsUsed[col] = "N/A";
                 }
-            } else {
+            } 
+            else{
                 String mode = freq.entrySet().stream()
                         .sorted(Map.Entry.<String, Integer>comparingByValue().reversed()
                                 .thenComparing(Map.Entry.comparingByKey()))
@@ -130,9 +137,9 @@ public class DataCleaner {
         }
 
         // Step 3: Impute missing values
-        for (String[] row : data) {
-            for (int col = 0; col < numCols; col++) {
-                if (row[col].trim().equals("?") || row[col].trim().isEmpty()) {
+        for (String[] row : data){
+            for(int col = 0; col < numCols; col++){
+                if(row[col].trim().equals("?") || row[col].trim().isEmpty()){
                     row[col] = imputationValues[col];
                     imputedCounts[col]++;
                 }
@@ -141,17 +148,17 @@ public class DataCleaner {
 
         // Step 4: Write cleaned ARFF file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath))) {
-            for (String h : header) {
+            for(String h : header){
                 writer.write(h + "\n");
             }
-            for (String[] row : data) {
+            for(String[] row : data){
                 writer.write(String.join(",", row) + "\n");
             }
             System.out.println("Cleaned ARFF file saved to: " + outputPath);
         }
 
         // Step 5: Write cleaning report
-        try (BufferedWriter reportWriter = new BufferedWriter(new FileWriter(reportPath))) {
+        try(BufferedWriter reportWriter = new BufferedWriter(new FileWriter(reportPath))){
             reportWriter.write("=== Data Cleaning Report ===\n\n");
             reportWriter.write("Total Records Before Duplicate Removal: " + totalRecordsBefore + "\n");
             reportWriter.write("Total Records After Duplicate Removal: " + totalRecordsAfter + "\n");
