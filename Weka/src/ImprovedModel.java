@@ -239,6 +239,7 @@ import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 
+
 public class ImprovedModel {
     private Instances originalData;
     private Instances originalTrainData;
@@ -247,6 +248,7 @@ public class ImprovedModel {
     private Instances improvedTestData;
     private Clusterer clusterer;
     private String clusterInfo;
+    private weka.classifiers.Classifier classifier;
 
     public Instances[] runClustering(String dataPath, String method, double trainRatio) throws Exception {
         // Load full dataset
@@ -380,13 +382,15 @@ public class ImprovedModel {
         long endClustering = System.currentTimeMillis();
 
         long startTimeModel = System.currentTimeMillis();
-        ClassifierModel classifier = new ClassifierModel(null, classifierType, improved[0], improved[1]);
-        classifier.trainModel();
+        ClassifierModel classifierModel = new ClassifierModel(null, classifierType, improved[0], improved[1]);
+        classifierModel.trainModel();
+        // Store the classifier for later access
+        this.classifier = classifierModel.getClassifier();
         long endTimeModel = System.currentTimeMillis();
         
         long startTimeEval = System.currentTimeMillis();
-        Evaluator evaluator = new Evaluator(classifier.getClassifier(), classifier.getTrainData(),
-                classifier.getTestData());
+        Evaluator evaluator = new Evaluator(classifierModel.getClassifier(), classifierModel.getTrainData(),
+                classifierModel.getTestData());
         evaluator.evaluateOnTestData();
         evaluator.printResults();
         long endTimeEval = System.currentTimeMillis();
@@ -395,6 +399,26 @@ public class ImprovedModel {
         String resultPath = "Weka/results/" + datasetName + "_" + classifierType + "_results_improved_by_"
                 + clusterMethod + ".txt";
         evaluator.saveResultsToFile(resultPath, clusterInfo, endTimeModel - startTimeModel, endTimeEval - startTimeEval, endClustering - startClustering);
+    }
+
+    public weka.classifiers.Classifier getClassifier() {
+        return classifier;
+    }
+    
+    public weka.clusterers.Clusterer getClusterer() {
+        return clusterer;
+    }
+
+    public Instances getImprovedTrainData() {
+        return improvedTrainData;
+    }
+
+    public Instances getImprovedTestData() {
+        return improvedTestData;
+    }
+
+    public String getClusterInfo() {
+        return clusterInfo;
     }
 }
 
