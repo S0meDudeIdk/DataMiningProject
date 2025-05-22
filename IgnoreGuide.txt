@@ -9,7 +9,7 @@ App to use: Git Bash (open this app on Windows to use those below commands)
 ------------------------------------
 BASIC NAVIGATION & STATUS
 ------------------------------------
-$ cd /c/GitHub/DataMiningProject   # Navigate to repo
+$ cd /d/GitHub/DataMiningProject   # Navigate to repo
 $ git status                       # Check Git status
 
 
