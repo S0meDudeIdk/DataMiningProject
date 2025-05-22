@@ -7,12 +7,10 @@ import weka.core.converters.CSVLoader;
 public class ARFFConverter {
 
     public static void csvToArff(String filePath) throws Exception {
-        // Load csv file
         CSVLoader loader = new CSVLoader();
         loader.setSource(new File(filePath));
         Instances dataset = loader.getDataSet();
 
-        // Save as arff format
         ArffSaver saver = new ArffSaver();
         saver.setInstances(dataset);
         saver.setFile(new File("Weka/dataset/arff/Students-Social-Media-Addiction.arff"));
@@ -21,7 +19,6 @@ public class ARFFConverter {
 
     public static void main(String[] args) {
         try {
-            // Provide the path to your CSV file here
             String csvFilePath = "Weka/dataset/csv/Students-Social-Media-Addiction.csv";
             csvToArff(csvFilePath);
             System.out.println("Conversion successful.");

@@ -332,7 +332,6 @@ public class ClassifierModel {
     }
 
     private void handleMissingValues() throws Exception {
-        // Process training data
         int trainMissingCount = countMissingValues(trainData);
         if (trainMissingCount > 0) {
             System.out.println("Detected " + trainMissingCount + " missing values in training data. Applying ReplaceMissingValues filter.");
@@ -346,7 +345,7 @@ public class ClassifierModel {
         if (testMissingCount > 0) {
             System.out.println("Detected " + testMissingCount + " missing values in test data. Applying ReplaceMissingValues filter.");
             ReplaceMissingValues replaceMissing = new ReplaceMissingValues();
-            replaceMissing.setInputFormat(trainData); // Use trainData format to ensure consistency
+            replaceMissing.setInputFormat(trainData);
             testData = Filter.useFilter(testData, replaceMissing);
         }
     }
@@ -374,7 +373,6 @@ public class ClassifierModel {
     }
 
     private void preprocessNumericData() throws Exception {
-        // Process training data
         int trainNumericCount = countNumericAttributes(trainData);
         if (trainNumericCount > 0) {
             System.out.println("Detected " + trainNumericCount + " numeric attributes in training data. Applying normalization.");
@@ -382,7 +380,6 @@ public class ClassifierModel {
             normalize.setInputFormat(trainData);
             trainData = Filter.useFilter(trainData, normalize);
 
-            // Apply same normalization to test data
             testData = Filter.useFilter(testData, normalize);
 
             if (trainData.numAttributes() > 10) {
@@ -468,7 +465,6 @@ public class ClassifierModel {
     }
 
     private void discretizeClassAttribute() throws Exception {
-        // Process training data
         System.out.println("Converting numeric class to nominal for " + classifierType + " classifier...");
         int classIdx = trainData.classIndex();
 
