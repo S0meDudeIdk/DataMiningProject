@@ -41,6 +41,15 @@ public class Main {
                 String datasetName = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.lastIndexOf("."));
                 String resultPath = "Weka/results/" + datasetName + "_" + classifierType + "_results.txt";
                 evaluator.saveResultsToFile(resultPath, null, modelTime, evalTime, 0);
+                
+                // Add tree visualization option for J48 only
+                if (classifierType.equals("j48")) {
+                    System.out.println("Would you like to visualize the J48 decision tree? (y/n)");
+                    String visualizeChoice = scanner.nextLine().trim().toLowerCase();
+                    if (visualizeChoice.equals("y") || visualizeChoice.equals("yes")) {
+                        TreeVisualizer.visualizeClassifier(model.getClassifier(), datasetName);
+                    }
+                }
 
             } else if (choice == 2) {
                 System.out.println("Choose clustering method:");
@@ -50,6 +59,38 @@ public class Main {
 
                 ImprovedModel improvedModel = new ImprovedModel();
                 improvedModel.runWithClassifier(filePath, clusterMethod, classifierType, folds);
+                
+                // Visualization options based on algorithm
+                if (classifierType.equals("j48")) {
+                    System.out.println("Would you like to visualize the J48 decision tree? (y/n)");
+                    String visualizeChoice = scanner.nextLine().trim().toLowerCase();
+                    if (visualizeChoice.equals("y") || visualizeChoice.equals("yes")) {
+                        String datasetName = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.lastIndexOf("."));
+                        if (improvedModel.getClassifier() != null) {
+                            TreeVisualizer.visualizeClassifier(improvedModel.getClassifier(), datasetName);
+                        } else {
+                            System.out.println("No classifier available for visualization.");
+                        }
+                    }
+                }
+                
+                // Add cluster visualization option for KMeans
+                if (clusterMethod.equals("kmeans")) {
+                    System.out.println("Would you like to visualize the KMeans clusters? (y/n)");
+                    String visualizeChoice = scanner.nextLine().trim().toLowerCase();
+                    if (visualizeChoice.equals("y") || visualizeChoice.equals("yes")) {
+                        String datasetName = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.lastIndexOf("."));
+                        if (improvedModel.getClusterer() instanceof weka.clusterers.SimpleKMeans) {
+                            ClusterVisualizer.visualizeCluster(
+                                (weka.clusterers.SimpleKMeans)improvedModel.getClusterer(),
+                                improvedModel.getImprovedTrainData(),
+                                datasetName
+                            );
+                        } else {
+                            System.out.println("Only KMeans clustering can be visualized currently.");
+                        }
+                    }
+                }
             } else {
                 System.out.println("Invalid choice. Please select 1 or 2.");
             }
