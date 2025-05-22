@@ -271,12 +271,6 @@ public class ImprovedModel {
 
         // Initialize clusterer
         switch (method.toLowerCase()) {
-            case "em":
-                EM em = new EM();
-                em.setNumClusters(-1);
-                clusterer = em;
-                System.out.println("Using EM clustering");
-                break;
             case "kmeans":
             default:
                 SimpleKMeans kMeans = new SimpleKMeans();
