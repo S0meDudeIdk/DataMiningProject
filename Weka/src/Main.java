@@ -6,12 +6,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         try {
             // For testing the classifier
-            // String filePath = "emotions_train.arff"; 
             String filePath = "Weka/dataset/summer-products-with-rating-and-performance_2020-08.arff";
-            // summer-products-with-rating-and-performance_2020-08
-            // computed_insight_success_of_active_sellers
-            // unique-categories
-            // unique-categories.sorted-by-count
             if (args.length > 0) {
                 // filePath = args[0];
             }
