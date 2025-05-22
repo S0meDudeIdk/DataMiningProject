@@ -1,0 +1,23 @@
+=== Data Cleaning Report ===
+
+Total Records Before Duplicate Removal: 705
+Total Records After Duplicate Removal: 705
+Total Attributes: 13
+
+Total Missing Values Before Cleaning: 61
+Total Values Imputed: 61
+
+Attribute (Col Index)     Missing              Imputed             
+Column 00                 0                    0                   
+Column 01                 9                    9                   
+Column 02                 6                    6                   
+Column 03                 5                    5                   
+Column 04                 2                    2                   
+Column 05                 8                    8                   
+Column 06                 5                    5                   
+Column 07                 5                    5                   
+Column 08                 7                    7                   
+Column 09                 4                    4                   
+Column 10                 4                    4                   
+Column 11                 5                    5                   
+Column 12                 1                    1                   
