@@ -271,12 +271,6 @@ public class ImprovedModel {
 
         // Initialize clusterer
         switch (method.toLowerCase()) {
-            case "em":
-                EM em = new EM();
-                em.setNumClusters(-1);
-                clusterer = em;
-                System.out.println("Using EM clustering");
-                break;
             case "kmeans":
             default:
                 SimpleKMeans kMeans = new SimpleKMeans();
@@ -302,7 +296,7 @@ public class ImprovedModel {
         clusterEvaluation.evaluateClusterer(newTestData);
         clusterInfo = clusterEvaluation.clusterResultsToString();
         System.out.println(clusterer);
-        
+
         // Restore class attribute
         originalTrainData.setClassIndex(classIndex);
         originalTestData.setClassIndex(classIndex);
@@ -351,18 +345,27 @@ public class ImprovedModel {
 
     public void runWithClassifier(String dataPath, String clusterMethod, String classifierType, int folds)
             throws Exception {
+        
+        long startClustering = System.currentTimeMillis();
         Instances[] improved = runClustering(dataPath, clusterMethod, 0.8);
+        long endClustering = System.currentTimeMillis();
+
+        long startTimeModel = System.currentTimeMillis();
         ClassifierModel classifier = new ClassifierModel(null, classifierType, improved[0], improved[1]);
         classifier.trainModel();
+        long endTimeModel = System.currentTimeMillis();
+        
+        long startTimeEval = System.currentTimeMillis();
         Evaluator evaluator = new Evaluator(classifier.getClassifier(), classifier.getTrainData(),
                 classifier.getTestData());
-        evaluator.crossValidate(folds);
         evaluator.evaluateOnTestData();
         evaluator.printResults();
+        long endTimeEval = System.currentTimeMillis();
+
         String datasetName = dataPath.substring(dataPath.lastIndexOf("/") + 1, dataPath.lastIndexOf("."));
         String resultPath = "Weka/results/" + datasetName + "_" + classifierType + "_results_improved_by_"
                 + clusterMethod + ".txt";
-        evaluator.saveResultsToFile(resultPath, clusterInfo);
+        evaluator.saveResultsToFile(resultPath, clusterInfo, endTimeModel - startTimeModel, endTimeEval - startTimeEval, endClustering - startClustering);
     }
 }
 

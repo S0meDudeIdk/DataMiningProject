@@ -19,7 +19,7 @@ public class Evaluator {
         this.testData = testData;
         this.evaluation = new Evaluation(trainData);
     }
-
+    
     public void crossValidate(int folds) throws Exception {
         Random rand = new Random(1);
         evaluation.crossValidateModel(classifier, trainData, folds, rand);
@@ -41,7 +41,7 @@ public class Evaluator {
         System.out.println(evaluation.toClassDetailsString().trim());
     }
 
-    public void saveResultsToFile(String outputPath, String outputCluster) throws Exception {
+    public void saveResultsToFile(String outputPath, String outputCluster, long modelTime, long evalTime, long clusterTime) throws Exception {
         File outputFile = new File(outputPath);
         File parentDir = outputFile.getParentFile();
         if (parentDir != null && !parentDir.exists()) {
@@ -57,14 +57,58 @@ public class Evaluator {
             writer.println("Kappa statistic: " + evaluation.kappa());
             writer.println("Mean absolute error: " + evaluation.meanAbsoluteError());
             writer.println("Root mean squared error: " + evaluation.rootMeanSquaredError());
+
+            double sumPrecision = 0, sumRecall = 0, sumFMeasure = 0;
+            int numClasses = (testData != null) ? testData.numClasses() : trainData.numClasses();
+            int validClassCount = 0;
+            for (int i = 0; i < numClasses; i++) {
+                double p = evaluation.precision(i);
+                double r = evaluation.recall(i);
+                double f = evaluation.fMeasure(i);
+                if (!Double.isNaN(p) && !Double.isNaN(r) && !Double.isNaN(f)) {
+                    sumPrecision += p;
+                    sumRecall += r;
+                    sumFMeasure += f;
+                    validClassCount++;
+                }
+            }
+            double macroPrecision = validClassCount > 0 ? sumPrecision / validClassCount : Double.NaN;
+            double macroRecall = validClassCount > 0 ? sumRecall / validClassCount : Double.NaN;
+            double macroFMeasure = validClassCount > 0 ? sumFMeasure / validClassCount : Double.NaN;
+            writer.println("Macro Precision: " + macroPrecision);
+            writer.println("Macro Recall: " + macroRecall);
+            writer.println("Macro F-Measure: " + macroFMeasure);
+
+            writer.println("\n=== Weighted Metrics ===");
             writer.println("Precision: " + evaluation.weightedPrecision());
             writer.println("Recall: " + evaluation.weightedRecall());
-            writer.println("F-Measure: " + evaluation.weightedFMeasure()); 
+            writer.println("F-Measure: " + evaluation.weightedFMeasure());
+            
+            writer.println("\n=== Per-Class Metrics ===");
+            for (int i = 0; i < numClasses; i++) {
+                String className = trainData.classAttribute().value(i);
+                writer.println("\nClass: " + className);
+                writer.println("Precision: " + evaluation.precision(i));
+                writer.println("Recall: " + evaluation.recall(i));
+                writer.println("F-Measure: " + evaluation.fMeasure(i));
+                writer.println("True Positives: " + evaluation.numTruePositives(i));
+                writer.println("False Positives: " + evaluation.numFalsePositives(i));
+                writer.println("True Negatives: " + evaluation.numTrueNegatives(i));
+                writer.println("False Negatives: " + evaluation.numFalseNegatives(i));
+            }
+
+            writer.println("\n=== Confusion Matrix ===");
             writer.println(evaluation.toMatrixString().trim());
             writer.println(evaluation.toClassDetailsString().trim());
             if(outputCluster!=null){
                 writer.println(outputCluster);
             }
+            writer.println("Train model time: " + modelTime);
+            writer.println("Evaluation time: " + evalTime);
+            writer.println("Clustering time: " + clusterTime);
+            long totalTime = modelTime + evalTime + clusterTime;
+            writer.println("Total time: " + totalTime);
+            
             System.out.println("Evaluation results saved to: " + outputPath);
         }
     }
