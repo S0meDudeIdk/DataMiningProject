@@ -243,7 +243,6 @@ import java.io.IOException;
 import weka.classifiers.Classifier;
 import weka.classifiers.trees.J48;
 import weka.classifiers.bayes.NaiveBayes;
-import weka.classifiers.functions.SMO;
 import weka.classifiers.rules.OneR;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.Normalize;
@@ -304,8 +303,7 @@ public class ClassifierModel {
             preprocessNumericDataSingleData();
 
             if (data.classAttribute().isNumeric() &&
-                    (classifierType.equals("j48") || classifierType.equals("naivebayes")
-                            || classifierType.equals("svm"))) {
+                    (classifierType.equals("j48") || classifierType.equals("naivebayes"))) {
                 discretizeClassAttributeSingleData();
             }
 
@@ -328,7 +326,7 @@ public class ClassifierModel {
             trainData.setClassIndex(trainData.numAttributes() - 1);
         }
         if (trainData.classAttribute().isNumeric() &&
-                (classifierType.equals("j48") || classifierType.equals("naivebayes") || classifierType.equals("svm"))) {
+                (classifierType.equals("j48") || classifierType.equals("naivebayes"))) {
             discretizeClassAttribute();
         }
     }
@@ -538,10 +536,6 @@ public class ClassifierModel {
             case "naivebayes":
                 classifier = new NaiveBayes();
                 System.out.println("Using Naive Bayes classifier");
-                break;
-            case "svm":
-                classifier = new SMO();
-                System.out.println("Using SVM classifier (SMO implementation)");
                 break;
             case "oner":
                 classifier = new OneR();
