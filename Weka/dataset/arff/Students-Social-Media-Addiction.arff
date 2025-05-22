@@ -59,13 +59,13 @@
 42,19,Female,'High School',Nigeria,5.8,Instagram,Yes,5.4,5,Complicated,4,8
 43,?,Male,Undergraduate,Kenya,3.7,Facebook,No,6.6,7,Single,2,5
 44,20,Female,Undergraduate,Ghana,4.6,Snapchat,Yes,5.7,6,'In Relationship',3,7
-45,18,Male,'High School',Argentina,5.5,TikTok,Yes,5.3,5,Single,4,8
-46,23,Female,Graduate,Chile,2.7,LinkedIn,No,7.1,8,Complicated,1,4
+45,?,?,?,?,?,?,Yes,5.3,5,Single,4,8
+46,?,?,?,?,?,?,?,?,8,Complicated,1,4
 47,19,Male,Undergraduate,Colombia,4.8,Instagram,Yes,5.9,6,'In Relationship',3,7
 48,20,Female,Undergraduate,Peru,5.5,TikTok,Yes,5.6,5,Single,4,8
 49,22,Male,Graduate,Venezuela,3.3,Facebook,No,6.7,7,'In Relationship',2,5
 50,19,Female,'High School',Ecuador,6.3,Instagram,Yes,5.2,5,Complicated,4,9
-51,21,Male,Undergraduate,Uruguay,3.8,YouTube,No,6.4,7,Single,2,6
+51,21,Male,Undergraduate,?,3.8,YouTube,No,6.4,7,Single,2,6
 52,20,?,Undergraduate,Paraguay,4.7,TikTok,Yes,5.8,6,'In Relationship',3,7
 53,24,Male,Graduate,Bolivia,2.4,LinkedIn,No,7.2,8,Complicated,1,4
 54,19,Female,'High School','Costa Rica',5.7,Instagram,Yes,5.5,5,Single,4,8
