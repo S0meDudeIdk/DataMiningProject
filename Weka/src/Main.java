@@ -9,6 +9,18 @@ public class Main {
             if (args.length > 0) {
                 // filePath = args[0];
             }
+
+            System.out.println("Choose file path:");
+            System.out.println("1. Default file path");
+            System.out.println("2. Optional file path");
+            System.out.print("Enter choice (1 or 2): ");
+            int option = Integer.parseInt(scanner.nextLine().trim());
+            if(option == 2){
+                System.out.print("Enter file path: ");
+                String alternatePath = scanner.nextLine().trim();
+                filePath = alternatePath;
+            }
+            
             System.out.println("Choose operation:");
             System.out.println("1. Classification only");
             System.out.println("2. Classification with Clustering (Improved Model)");
