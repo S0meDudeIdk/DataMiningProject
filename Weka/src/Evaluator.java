@@ -79,6 +79,25 @@ public class Evaluator {
             writer.println("Macro Recall: " + macroRecall);
             writer.println("Macro F-Measure: " + macroFMeasure);
 
+            writer.println("\n=== Weighted Metrics ===");
+            writer.println("Precision: " + evaluation.weightedPrecision());
+            writer.println("Recall: " + evaluation.weightedRecall());
+            writer.println("F-Measure: " + evaluation.weightedFMeasure());
+            
+            writer.println("\n=== Per-Class Metrics ===");
+            for (int i = 0; i < numClasses; i++) {
+                String className = trainData.classAttribute().value(i);
+                writer.println("\nClass: " + className);
+                writer.println("Precision: " + evaluation.precision(i));
+                writer.println("Recall: " + evaluation.recall(i));
+                writer.println("F-Measure: " + evaluation.fMeasure(i));
+                writer.println("True Positives: " + evaluation.numTruePositives(i));
+                writer.println("False Positives: " + evaluation.numFalsePositives(i));
+                writer.println("True Negatives: " + evaluation.numTrueNegatives(i));
+                writer.println("False Negatives: " + evaluation.numFalseNegatives(i));
+            }
+
+            writer.println("\n=== Confusion Matrix ===");
             writer.println(evaluation.toMatrixString().trim());
             writer.println(evaluation.toClassDetailsString().trim());
             if(outputCluster!=null){
