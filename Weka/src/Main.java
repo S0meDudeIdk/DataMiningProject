@@ -7,7 +7,7 @@ public class Main {
         try {
             // For testing the classifier
             // String filePath = "emotions_train.arff"; 
-            String filePath = "Weka/dataset/summer-products-with-rating-and-performance_2020-08.arff";
+            String filePath = "Weka/dataset/test2.arff";
             // summer-products-with-rating-and-performance_2020-08
             // computed_insight_success_of_active_sellers
             // unique-categories

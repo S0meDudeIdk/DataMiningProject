@@ -15,14 +15,14 @@ public class test {
         // Save as arff format
         ArffSaver saver = new ArffSaver();
         saver.setInstances(dataset);
-        saver.setFile(new File("Weka/dataset/text.arff"));
+        saver.setFile(new File("Weka/dataset/test2.arff"));
         saver.writeBatch();
     }
 
     public static void main(String[] args) {
         try {
             // Provide the path to your CSV file here
-            String csvFilePath = "Weka/dataset/csv/text.csv";
+            String csvFilePath = "Weka/dataset/csv/Students Social Media Addiction.csv";
             csvToArff(csvFilePath);
             System.out.println("Conversion successful.");
         } catch (Exception e) {

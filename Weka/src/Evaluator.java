@@ -68,6 +68,9 @@ public class Evaluator {
             writer.println("Kappa statistic: " + evaluation.kappa());
             writer.println("Mean absolute error: " + evaluation.meanAbsoluteError());
             writer.println("Root mean squared error: " + evaluation.rootMeanSquaredError());
+            writer.println("Precision: " + evaluation.weightedPrecision());
+            writer.println("Recall: " + evaluation.weightedRecall());
+            writer.println("F-Measure: " + evaluation.weightedFMeasure()); 
             writer.println(evaluation.toMatrixString().trim());
             writer.println(evaluation.toClassDetailsString().trim());
             System.out.println("Evaluation results saved to: " + outputPath);

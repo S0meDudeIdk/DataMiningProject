@@ -559,10 +559,10 @@ public class ClassifierModel {
             throw new Exception("No training data loaded. Load data before training.");
         }
         System.out.println("Training " + classifierType + " classifier...");
-        StringToWordVector filter = new StringToWordVector();
-        filter.setInputFormat(trainData);
-        trainData = Filter.useFilter(trainData, filter);
-        testData = Filter.useFilter(testData, filter);
+        // StringToWordVector filter = new StringToWordVector();
+        // filter.setInputFormat(trainData);
+        // trainData = Filter.useFilter(trainData, filter);
+        // testData = Filter.useFilter(testData, filter);
 
         classifier.buildClassifier(trainData);
         System.out.println("Training complete.");
@@ -573,10 +573,14 @@ public class ClassifierModel {
             throw new Exception("No data loaded. Load data before training.");
         }
         System.out.println("Training " + classifierType + " classifier...");
-        StringToWordVector filter = new StringToWordVector();
-        filter.setInputFormat(data);
-        data = Filter.useFilter(data, filter);
-        
+        // StringToWordVector filter = new StringToWordVector();
+        // filter.setInputFormat(data);
+        // data = Filter.useFilter(data, filter);
+        // if (data.classIndex() == -1) {
+        //     data.setClassIndex(data.numAttributes() - 1);
+        //     discretizeClassAttributeSingleData();
+        // }
+        discretizeClassAttributeSingleData();
         classifier.buildClassifier(data);
         System.out.println("Training complete.");
     }

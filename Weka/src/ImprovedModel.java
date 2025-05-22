@@ -279,7 +279,7 @@ public class ImprovedModel {
             case "kmeans":
             default:
                 SimpleKMeans kMeans = new SimpleKMeans();
-                kMeans.setNumClusters(2);
+                kMeans.setNumClusters(3);
                 kMeans.setSeed(10);
                 kMeans.setPreserveInstancesOrder(true);
                 clusterer = kMeans;
