@@ -243,7 +243,6 @@ import java.io.IOException;
 import weka.classifiers.Classifier;
 import weka.classifiers.trees.J48;
 import weka.classifiers.bayes.NaiveBayes;
-import weka.classifiers.functions.SMO;
 import weka.classifiers.rules.OneR;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.Normalize;
@@ -304,8 +303,7 @@ public class ClassifierModel {
             preprocessNumericDataSingleData();
 
             if (data.classAttribute().isNumeric() &&
-                    (classifierType.equals("j48") || classifierType.equals("naivebayes")
-                            || classifierType.equals("svm"))) {
+                    (classifierType.equals("j48") || classifierType.equals("naivebayes"))) {
                 discretizeClassAttributeSingleData();
             }
 
@@ -328,13 +326,12 @@ public class ClassifierModel {
             trainData.setClassIndex(trainData.numAttributes() - 1);
         }
         if (trainData.classAttribute().isNumeric() &&
-                (classifierType.equals("j48") || classifierType.equals("naivebayes") || classifierType.equals("svm"))) {
+                (classifierType.equals("j48") || classifierType.equals("naivebayes"))) {
             discretizeClassAttribute();
         }
     }
 
     private void handleMissingValues() throws Exception {
-        // Process training data
         int trainMissingCount = countMissingValues(trainData);
         if (trainMissingCount > 0) {
             System.out.println("Detected " + trainMissingCount + " missing values in training data. Applying ReplaceMissingValues filter.");
@@ -348,7 +345,7 @@ public class ClassifierModel {
         if (testMissingCount > 0) {
             System.out.println("Detected " + testMissingCount + " missing values in test data. Applying ReplaceMissingValues filter.");
             ReplaceMissingValues replaceMissing = new ReplaceMissingValues();
-            replaceMissing.setInputFormat(trainData); // Use trainData format to ensure consistency
+            replaceMissing.setInputFormat(trainData);
             testData = Filter.useFilter(testData, replaceMissing);
         }
     }
@@ -376,7 +373,6 @@ public class ClassifierModel {
     }
 
     private void preprocessNumericData() throws Exception {
-        // Process training data
         int trainNumericCount = countNumericAttributes(trainData);
         if (trainNumericCount > 0) {
             System.out.println("Detected " + trainNumericCount + " numeric attributes in training data. Applying normalization.");
@@ -384,7 +380,6 @@ public class ClassifierModel {
             normalize.setInputFormat(trainData);
             trainData = Filter.useFilter(trainData, normalize);
 
-            // Apply same normalization to test data
             testData = Filter.useFilter(testData, normalize);
 
             if (trainData.numAttributes() > 10) {
@@ -470,7 +465,6 @@ public class ClassifierModel {
     }
 
     private void discretizeClassAttribute() throws Exception {
-        // Process training data
         System.out.println("Converting numeric class to nominal for " + classifierType + " classifier...");
         int classIdx = trainData.classIndex();
 
@@ -538,10 +532,6 @@ public class ClassifierModel {
             case "naivebayes":
                 classifier = new NaiveBayes();
                 System.out.println("Using Naive Bayes classifier");
-                break;
-            case "svm":
-                classifier = new SMO();
-                System.out.println("Using SVM classifier (SMO implementation)");
                 break;
             case "oner":
                 classifier = new OneR();

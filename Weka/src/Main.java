@@ -5,13 +5,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
         try {
-            // For testing the classifier
-            // String filePath = "emotions_train.arff"; 
-            String filePath = "Weka/dataset/test2.arff";
-            // summer-products-with-rating-and-performance_2020-08
-            // computed_insight_success_of_active_sellers
-            // unique-categories
-            // unique-categories.sorted-by-count
+            String filePath = "Weka/dataset/data_ready/Students-Social-Media-Addiction.arff";
             if (args.length > 0) {
                 // filePath = args[0];
             }
@@ -22,7 +16,7 @@ public class Main {
             int choice = Integer.parseInt(scanner.nextLine().trim());
 
             System.out.println("Choose classifier:");
-            System.out.println("j48 | naivebayes | svm");
+            System.out.println("j48 | naivebayes | oner");
             System.out.print("Enter classifier type: ");
             String classifierType = scanner.nextLine().trim().toLowerCase();
 
@@ -30,10 +24,8 @@ public class Main {
 
             if (choice == 1) {
                 ClassifierModel model = new ClassifierModel(filePath, classifierType, null, null);
-                // ClassifierModel model = new ClassifierModel(trainFilePath, testFilePath, classifierType, null, null);
+
                 model.trainModelSingleData();
-                // Evaluation eval = model.evaluateModel(10);
-                // model.printResults(eval);
                 
                 Evaluator evaluator = new Evaluator(model.getClassifier(), model.getData(), null);
                 evaluator.crossValidate(10);
