@@ -223,11 +223,6 @@ public class DataCleaner {
                 reportWriter.write("-".repeat(45) + "\n");
                 reportWriter.write(String.format("%-15s %-10d %-15s\n", "Total", totalPlatformEntries, "100.0%"));
             }
-
-            reportWriter.write("\n=== Summary ===\n");
-            reportWriter.write("Dataset successfully cleaned with median-based imputation for numeric attributes\n");
-            reportWriter.write("and mode-based imputation for categorical attributes.\n");
-            reportWriter.write("All missing values have been addressed using statistically appropriate methods.\n");
         }
 
         System.out.println("Comprehensive cleaning report saved to: " + reportPath);

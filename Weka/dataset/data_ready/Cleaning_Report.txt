@@ -41,8 +41,3 @@ Vkontakte       12         1.7%
 YouTube         8          1.1%           
 ---------------------------------------------
 Total           705        100.0%         
-
-=== Summary ===
-Dataset successfully cleaned with median-based imputation for numeric attributes
-and mode-based imputation for categorical attributes.
-All missing values have been addressed using statistically appropriate methods.
