@@ -44,7 +44,7 @@ public class Main {
 
             } else if (choice == 2) {
                 System.out.println("Choose clustering method:");
-                System.out.println("kmeans | em");
+                System.out.println("kmeans");
                 System.out.print("Enter clustering method: ");
                 String clusterMethod = scanner.nextLine().trim().toLowerCase();
 
