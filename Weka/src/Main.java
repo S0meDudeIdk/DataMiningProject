@@ -23,17 +23,24 @@ public class Main {
             int folds = 10;
 
             if (choice == 1) {
+                long startTimeModel = System.currentTimeMillis();
                 ClassifierModel model = new ClassifierModel(filePath, classifierType, null, null);
 
                 model.trainModelSingleData();
-                
+                long endTimeModel = System.currentTimeMillis();
+
+                long startTimeEval = System.currentTimeMillis();
                 Evaluator evaluator = new Evaluator(model.getClassifier(), model.getData(), null);
                 evaluator.crossValidate(10);
                 evaluator.printResults();
+                long endTimeEval = System.currentTimeMillis();
 
+                long modelTime = endTimeModel - startTimeModel;
+                long evalTime = endTimeEval - startTimeEval;
+                
                 String datasetName = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.lastIndexOf("."));
                 String resultPath = "Weka/results/" + datasetName + "_" + classifierType + "_results.txt";
-                evaluator.saveResultsToFile(resultPath, null);
+                evaluator.saveResultsToFile(resultPath, null, modelTime, evalTime, 0);
 
             } else if (choice == 2) {
                 System.out.println("Choose clustering method:");
