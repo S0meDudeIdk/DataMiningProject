@@ -270,28 +270,24 @@ public class ImprovedModel {
         originalTestData.setClassIndex(-1);
 
         // Initialize clusterer
-        // switch (method.toLowerCase()) {
-        //     case "kmeans":
-        //     default:
-        //         SimpleKMeans kMeans = new SimpleKMeans();
-        //         kMeans.setNumClusters(4);
-        //         kMeans.setSeed(10);
-        //         kMeans.setPreserveInstancesOrder(true);
-        //         clusterer = kMeans;
-        //         System.out.println("Using KMeans clustering");
-        //         break;
-        // }
+        switch (method.toLowerCase()) {
+            case "kmeans":
+            default:
+                SimpleKMeans kMeans = new SimpleKMeans();
+                kMeans.setNumClusters(3);
+                kMeans.setSeed(10);
+                kMeans.setPreserveInstancesOrder(true);
+                clusterer = kMeans;
+                System.out.println("Using KMeans clustering");
+                break;
+        }
 
         // Apply StringToWordVector
         StringToWordVector filter = new StringToWordVector();
         filter.setInputFormat(originalTrainData);
         Instances newTrainData = Filter.useFilter(originalTrainData, filter);
         Instances newTestData = Filter.useFilter(originalTestData, filter);
-        int optimalK = findOptimalKMeansClusters(newTrainData, 2, 10);
-        SimpleKMeans kMeans = new SimpleKMeans();
-        kMeans.setNumClusters(optimalK);
-        kMeans.setSeed(10);
-        kMeans.setPreserveInstancesOrder(true);
+
         // Build clusterer
         clusterer.buildClusterer(newTrainData);
 
@@ -346,32 +342,7 @@ public class ImprovedModel {
 
         return new Instances[] { improvedTrainData, improvedTestData };
     }
-
-    public int findOptimalKMeansClusters(Instances data, int minK, int maxK) throws Exception {
-        System.out.println("Finding optimal number of clusters (K) from " + minK + " to " + maxK);
-        double bestSSE = Double.MAX_VALUE;
-        int bestK = minK;
-
-        for (int k = minK; k <= maxK; k++) {
-            SimpleKMeans kMeans = new SimpleKMeans();
-            kMeans.setNumClusters(k);
-            kMeans.setSeed(10);
-            kMeans.setPreserveInstancesOrder(true);
-            kMeans.buildClusterer(data);
-
-            double sse = kMeans.getSquaredError();
-            System.out.printf("K = %d | SSE = %.4f%n", k, sse);
-
-            if (sse < bestSSE) {
-                bestSSE = sse;
-                bestK = k;
-            }
-        }
-
-        System.out.println("Best K found: " + bestK + " with SSE = " + bestSSE);
-        return bestK;
-    }
-
+    
     public void runWithClassifier(String dataPath, String clusterMethod, String classifierType, int folds)
             throws Exception {
         
