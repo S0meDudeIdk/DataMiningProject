@@ -246,6 +246,7 @@ public class ImprovedModel {
     private Instances improvedTrainData;
     private Instances improvedTestData;
     private Clusterer clusterer;
+    private String clusterInfo;
 
     public Instances[] runClustering(String dataPath, String method, double trainRatio) throws Exception {
         // Load full dataset
@@ -296,6 +297,12 @@ public class ImprovedModel {
         // Build clusterer
         clusterer.buildClusterer(newTrainData);
 
+        ClusterEvaluation clusterEvaluation = new ClusterEvaluation();
+        clusterEvaluation.setClusterer(clusterer);
+        clusterEvaluation.evaluateClusterer(newTestData);
+        clusterInfo = clusterEvaluation.clusterResultsToString();
+        System.out.println(clusterer);
+        
         // Restore class attribute
         originalTrainData.setClassIndex(classIndex);
         originalTestData.setClassIndex(classIndex);
@@ -355,7 +362,7 @@ public class ImprovedModel {
         String datasetName = dataPath.substring(dataPath.lastIndexOf("/") + 1, dataPath.lastIndexOf("."));
         String resultPath = "Weka/results/" + datasetName + "_" + classifierType + "_results_improved_by_"
                 + clusterMethod + ".txt";
-        evaluator.saveResultsToFile(resultPath);
+        evaluator.saveResultsToFile(resultPath, clusterInfo);
     }
 }
 

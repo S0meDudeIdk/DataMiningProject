@@ -41,7 +41,7 @@ public class Main {
 
                 String datasetName = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.lastIndexOf("."));
                 String resultPath = "Weka/results/" + datasetName + "_" + classifierType + "_results.txt";
-                evaluator.saveResultsToFile(resultPath);
+                evaluator.saveResultsToFile(resultPath, null);
 
             } else if (choice == 2) {
                 System.out.println("Choose clustering method:");

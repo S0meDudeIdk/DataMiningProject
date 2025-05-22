@@ -39,20 +39,9 @@ public class Evaluator {
         System.out.println("Root mean squared error: " + evaluation.rootMeanSquaredError());
         System.out.println(evaluation.toMatrixString().trim());
         System.out.println(evaluation.toClassDetailsString().trim());
-        
-        // Print results
-        System.out.println(evaluation.toSummaryString("=== Evaluation Results ===", false));
-        System.out.println("Confusion Matrix:");
-        double[][] cmatrix = evaluation.confusionMatrix();
-        for (double[] row : cmatrix) {
-            for (double val : row) {
-                System.out.print(val + " ");
-            }
-            System.out.println();
-        }
     }
 
-    public void saveResultsToFile(String outputPath) throws Exception {
+    public void saveResultsToFile(String outputPath, String outputCluster) throws Exception {
         File outputFile = new File(outputPath);
         File parentDir = outputFile.getParentFile();
         if (parentDir != null && !parentDir.exists()) {
@@ -73,6 +62,9 @@ public class Evaluator {
             writer.println("F-Measure: " + evaluation.weightedFMeasure()); 
             writer.println(evaluation.toMatrixString().trim());
             writer.println(evaluation.toClassDetailsString().trim());
+            if(outputCluster!=null){
+                writer.println(outputCluster);
+            }
             System.out.println("Evaluation results saved to: " + outputPath);
         }
     }
