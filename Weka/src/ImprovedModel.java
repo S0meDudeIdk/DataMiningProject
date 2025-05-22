@@ -224,17 +224,17 @@
 // }
 
 import java.util.ArrayList;
-import java.util.Collections;
+// import java.util.Collections;
 import java.util.Random;
 
-import weka.classifiers.Evaluation;
+// import weka.classifiers.Evaluation;
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.Clusterer;
 import weka.clusterers.SimpleKMeans;
 import weka.clusterers.EM;
 import weka.core.Instances;
 import weka.core.Attribute;
-import weka.core.Instance;
+// import weka.core.Instance;
 import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.StringToWordVector;

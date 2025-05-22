@@ -247,7 +247,7 @@ import weka.classifiers.rules.OneR;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.Normalize;
 import weka.filters.unsupervised.attribute.ReplaceMissingValues;
-import weka.filters.unsupervised.attribute.StringToWordVector;
+// import weka.filters.unsupervised.attribute.StringToWordVector;
 import weka.filters.supervised.attribute.AttributeSelection;
 import weka.attributeSelection.InfoGainAttributeEval;
 import weka.attributeSelection.Ranker;
