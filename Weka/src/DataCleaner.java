@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DataCleaner {
 
@@ -19,11 +20,13 @@ public class DataCleaner {
         List<String> header = new ArrayList<>();
         List<String[]> data = new ArrayList<>();
         List<String> attributeTypes = new ArrayList<>();
+        List<String> attributeNames = new ArrayList<>();
         Set<String> uniqueRows = new HashSet<>();
         boolean inDataSection = false;
 
         int totalRecordsBefore = 0;
         int numCols = -1;
+        int platformColumnIndex = -1;
 
         // Step 1: Read the ARFF file
         try (BufferedReader reader = new BufferedReader(new FileReader(inputPath))) {
@@ -42,8 +45,15 @@ public class DataCleaner {
                     if(line.toLowerCase().startsWith("@attribute")){
                         String[] parts = line.split("\\s+", 3);
                         if(parts.length >= 3){
+                            String attributeName = parts[1].trim();
                             String type = parts[2].trim().toLowerCase();
+                            attributeNames.add(attributeName);
                             attributeTypes.add(type);
+                    
+                            if(attributeName.toLowerCase().contains("platform") || 
+                               attributeName.toLowerCase().contains("most_used_platform")){
+                                platformColumnIndex = attributeNames.size() - 1;
+                            }
                         }
                     }
                 } 
@@ -146,7 +156,22 @@ public class DataCleaner {
             }
         }
 
-        // Step 4: Write cleaned ARFF file
+        // Step 4: Calculate platform usage distribution after imputation
+        Map<String, Integer> platformDistribution = new HashMap<>();
+        int totalPlatformEntries = 0;
+        
+        if(platformColumnIndex != -1){
+            for(String[] row : data){
+                String platform = row[platformColumnIndex].trim();
+                if(!platform.isEmpty() && !platform.equals("?")){
+                    platform = standardizePlatformName(platform);
+                    platformDistribution.put(platform, platformDistribution.getOrDefault(platform, 0) + 1);
+                    totalPlatformEntries++;
+                }
+            }
+        }
+
+        // Step 5: Write cleaned ARFF file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath))) {
             for(String h : header){
                 writer.write(h + "\n");
@@ -157,7 +182,7 @@ public class DataCleaner {
             System.out.println("Cleaned ARFF file saved to: " + outputPath);
         }
 
-        // Step 5: Write cleaning report
+        // Step 6: Write comprehensive cleaning report
         try(BufferedWriter reportWriter = new BufferedWriter(new FileWriter(reportPath))){
             reportWriter.write("=== Data Cleaning Report ===\n\n");
             reportWriter.write("Total Records Before Duplicate Removal: " + totalRecordsBefore + "\n");
@@ -170,13 +195,74 @@ public class DataCleaner {
             reportWriter.write("Total Missing Values Before Cleaning: " + totalMissing + "\n");
             reportWriter.write("Total Values Imputed: " + totalImputed + "\n\n");
 
-            reportWriter.write(String.format("%-15s %-10s %-10s %-10s\n", "Column", "Missing", "Imputed", "Method"));
+            reportWriter.write("=== Imputation Details by Column ===\n");
+            reportWriter.write(String.format("%-25s %-10s %-10s %-10s\n", "Attribute", "Missing", "Imputed", "Method"));
+            reportWriter.write("-".repeat(60) + "\n");
             for (int i = 0; i < numCols; i++) {
-                reportWriter.write(String.format("%-15s %-10d %-10d %-10s\n", "Column " + String.format("%02d", i), missingCounts[i], imputedCounts[i], methodsUsed[i]));
-
+                String attributeName = (i < attributeNames.size()) ? attributeNames.get(i) : "Column_" + String.format("%02d", i);
+                reportWriter.write(String.format("%-25s %-10d %-10d %-10s\n", attributeName, missingCounts[i], imputedCounts[i], methodsUsed[i]));
             }
+
+            if(platformColumnIndex != -1 && !platformDistribution.isEmpty()){
+                reportWriter.write("\n=== Platform Usage Distribution (Post-Imputation) ===\n");
+                reportWriter.write(String.format("%-15s %-10s %-15s\n", "Platform", "Count", "Percentage"));
+                reportWriter.write("-".repeat(45) + "\n");
+                
+                List<Map.Entry<String, Integer>> sortedPlatforms = platformDistribution.entrySet()
+                        .stream()
+                        .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                        .collect(Collectors.toList());
+                
+                for(Map.Entry<String, Integer> entry : sortedPlatforms){
+                    String platform = entry.getKey();
+                    int count = entry.getValue();
+                    double percentage = (double) count / totalPlatformEntries * 100;
+                    reportWriter.write(String.format("%-15s %-10d %-15s\n", platform, count, String.format("%.1f%%", percentage)));
+                }
+                
+                reportWriter.write("-".repeat(45) + "\n");
+                reportWriter.write(String.format("%-15s %-10d %-15s\n", "Total", totalPlatformEntries, "100.0%"));
+            }
+
+            reportWriter.write("\n=== Summary ===\n");
+            reportWriter.write("Dataset successfully cleaned with median-based imputation for numeric attributes\n");
+            reportWriter.write("and mode-based imputation for categorical attributes.\n");
+            reportWriter.write("All missing values have been addressed using statistically appropriate methods.\n");
         }
 
-        System.out.println("Cleaning report saved to: " + reportPath);
+        System.out.println("Comprehensive cleaning report saved to: " + reportPath);
+    }
+
+    private static String standardizePlatformName(String platform) {
+        String normalized = platform.toLowerCase().trim();
+        
+        // Standardize common platform name variations
+        if(normalized.contains("instagram") || normalized.equals("ig")){
+            return "Instagram";
+        } 
+        else if(normalized.contains("tiktok") || normalized.contains("tik tok")){
+            return "TikTok";
+        } 
+        else if(normalized.contains("facebook") || normalized.equals("fb")){
+            return "Facebook";
+        } 
+        else if(normalized.contains("youtube") || normalized.equals("yt")){
+            return "YouTube";
+        } 
+        else if(normalized.contains("linkedin")){
+            return "LinkedIn";
+        } 
+        else if(normalized.contains("snapchat") || normalized.contains("snap")){
+            return "Snapchat";
+        } 
+        else if(normalized.contains("twitter") || normalized.equals("x")){
+            return "Twitter/X";
+        } 
+        else if(normalized.contains("whatsapp")){
+            return "WhatsApp";
+        } 
+        else{
+            return platform.substring(0, 1).toUpperCase() + platform.substring(1).toLowerCase();
+        }
     }
 }

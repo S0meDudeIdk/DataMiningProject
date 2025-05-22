@@ -7,17 +7,42 @@ Total Attributes: 13
 Total Missing Values Before Cleaning: 76
 Total Values Imputed: 76
 
-Column          Missing    Imputed    Method    
-Column 00       0          0          Median    
-Column 01       11         11         Median    
-Column 02       8          8          Mode      
-Column 03       7          7          Mode      
-Column 04       5          5          Mode      
-Column 05       10         10         Median    
-Column 06       7          7          Mode      
-Column 07       6          6          Mode      
-Column 08       8          8          Median    
-Column 09       4          4          Median    
-Column 10       4          4          Mode      
-Column 11       5          5          Median    
-Column 12       1          1          Median    
+=== Imputation Details by Column ===
+Attribute                 Missing    Imputed    Method    
+------------------------------------------------------------
+Student_ID                0          0          Median    
+Age                       11         11         Median    
+Gender                    8          8          Mode      
+Academic_Level            7          7          Mode      
+Country                   5          5          Mode      
+Avg_Daily_Usage_Hours     10         10         Median    
+Most_Used_Platform        7          7          Mode      
+Affects_Academic_Performance 6          6          Mode      
+Sleep_Hours_Per_Night     8          8          Median    
+Mental_Health_Score       4          4          Median    
+Relationship_Status       4          4          Mode      
+Conflicts_Over_Social_Media 5          5          Median    
+Addicted_Score            1          1          Median    
+
+=== Platform Usage Distribution (Post-Imputation) ===
+Platform        Count      Percentage     
+---------------------------------------------
+Instagram       256        36.3%          
+TikTok          152        21.6%          
+Facebook        122        17.3%          
+WhatsApp        54         7.7%           
+Twitter/X       30         4.3%           
+LinkedIn        20         2.8%           
+Wechat          15         2.1%           
+Line            12         1.7%           
+Kakaotalk       12         1.7%           
+Snapchat        12         1.7%           
+Vkontakte       12         1.7%           
+YouTube         8          1.1%           
+---------------------------------------------
+Total           705        100.0%         
+
+=== Summary ===
+Dataset successfully cleaned with median-based imputation for numeric attributes
+and mode-based imputation for categorical attributes.
+All missing values have been addressed using statistically appropriate methods.
