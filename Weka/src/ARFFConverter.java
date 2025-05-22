@@ -13,7 +13,7 @@ public class ARFFConverter {
 
         ArffSaver saver = new ArffSaver();
         saver.setInstances(dataset);
-        saver.setFile(new File("Weka/dataset/data_ready/Students-Social-Media-Addiction.arff"));
+        saver.setFile(new File("Weka/dataset/arff/Students-Social-Media-Addiction.arff"));
         saver.writeBatch();
     }
 
