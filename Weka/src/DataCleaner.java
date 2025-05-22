@@ -8,12 +8,23 @@ public class DataCleaner {
         String inputARFF = "Weka/dataset/arff/Students-Social-Media-Addiction.arff";
         String outputARFF = "Weka/dataset/data_ready/Students-Social-Media-Addiction.arff";
         String reportPath = "Weka/dataset/data_ready/Cleaning_Report.txt";
-
+        System.out.println("Choose file path:");
+        System.out.println("1. Default file path");
+        System.out.println("2. Optional file path");
+        System.out.print("Enter choice (1 or 2): ");
+        Scanner scanner = new Scanner(System.in);
+        int option = Integer.parseInt(scanner.nextLine().trim());
+        if(option == 2){
+            System.out.print("Enter file path: ");
+            String alternatePath = scanner.nextLine().trim();
+            inputARFF = alternatePath;
+        }
         try {
             cleanARFF(inputARFF, outputARFF, reportPath);
         } catch (IOException e) {
             System.err.println("Error processing ARFF file: " + e.getMessage());
         }
+        scanner.close();
     }
 
     public static void cleanARFF(String inputPath, String outputPath, String reportPath) throws IOException {
