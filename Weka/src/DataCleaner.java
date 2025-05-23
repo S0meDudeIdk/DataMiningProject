@@ -133,10 +133,10 @@ public class DataCleaner {
                     }
                     
                     if(median == Math.floor(median)) {
-                        imputationValues[col] = String.format("%.0f", median);  
+                        imputationValues[col] = String.format(Locale.US, "%.0f", median);  
                     } 
                     else{
-                        imputationValues[col] = String.format("%.1f", median); 
+                        imputationValues[col] = String.format(Locale.US, "%.1f", median); 
                     }
                     methodsUsed[col] = "Median";
                 } 
@@ -228,7 +228,7 @@ public class DataCleaner {
                     String platform = entry.getKey();
                     int count = entry.getValue();
                     double percentage = (double) count / totalPlatformEntries * 100;
-                    reportWriter.write(String.format("%-15s %-10d %-15s\n", platform, count, String.format("%.1f%%", percentage)));
+                    reportWriter.write(String.format("%-15s %-10d %-15s\n", platform, count, String.format(Locale.US,"%.1f%%", percentage)));
                 }
                 
                 reportWriter.write("-".repeat(45) + "\n");

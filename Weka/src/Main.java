@@ -5,6 +5,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
         try {
+            // String filePath = "Weka/dataset/arff/Students-Social-Media-Addiction.arff";
             String filePath = "Weka/dataset/data_ready/Students-Social-Media-Addiction.arff";
             if (args.length > 0) {
                 // filePath = args[0];
