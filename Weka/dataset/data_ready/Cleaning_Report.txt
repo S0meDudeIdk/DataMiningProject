@@ -4,40 +4,40 @@ Total Records Before Duplicate Removal: 705
 Total Records After Duplicate Removal: 705
 Total Attributes: 13
 
-Total Missing Values Before Cleaning: 0
-Total Values Imputed: 0
+Total Missing Values Before Cleaning: 77
+Total Values Imputed: 77
 
 === Imputation Details by Column ===
 Attribute                 Missing    Imputed    Method    
 ------------------------------------------------------------
 Student_ID                0          0          Median    
-Age                       0          0          Median    
-Gender                    0          0          Mode      
-Academic_Level            0          0          Mode      
-Country                   0          0          Mode      
-Avg_Daily_Usage_Hours     0          0          Median    
-Most_Used_Platform        0          0          Mode      
-Affects_Academic_Performance 0          0          Mode      
-Sleep_Hours_Per_Night     0          0          Median    
-Mental_Health_Score       0          0          Median    
-Relationship_Status       0          0          Mode      
-Conflicts_Over_Social_Media 0          0          Median    
-Addicted_Score            0          0          Median    
+Age                       11         11         Median    
+Gender                    9          9          Mode      
+Academic_Level            7          7          Mode      
+Country                   5          5          Mode      
+Avg_Daily_Usage_Hours     10         10         Median    
+Most_Used_Platform        7          7          Mode      
+Affects_Academic_Performance 6          6          Mode      
+Sleep_Hours_Per_Night     8          8          Median    
+Mental_Health_Score       4          4          Median    
+Relationship_Status       4          4          Mode      
+Conflicts_Over_Social_Media 5          5          Median    
+Addicted_Score            1          1          Median    
 
 === Platform Usage Distribution (Post-Imputation) ===
 Platform        Count      Percentage     
 ---------------------------------------------
-Instagram       249        35.3%          
-TikTok          154        21.8%          
-Facebook        123        17.4%          
+Instagram       256        36.3%          
+TikTok          152        21.6%          
+Facebook        122        17.3%          
 WhatsApp        54         7.7%           
 Twitter/X       30         4.3%           
-LinkedIn        21         3.0%           
+LinkedIn        20         2.8%           
 Wechat          15         2.1%           
-Snapchat        13         1.8%           
 Line            12         1.7%           
 Kakaotalk       12         1.7%           
+Snapchat        12         1.7%           
 Vkontakte       12         1.7%           
-YouTube         10         1.4%           
+YouTube         8          1.1%           
 ---------------------------------------------
 Total           705        100.0%         
